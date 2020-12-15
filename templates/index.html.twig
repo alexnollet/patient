@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% block body %}
+
+    {% for nom in nomservice %}
+        <br>
+        nom du service : {{ nom }}
+        <br>
+        nombre de lit max : {{ nbchambre[loop.index0] }}
+        <br>
+        nombre de place dispo : {{ nblitdispo[loop.index0] }}
+        <br>
+    {% endfor %}
+
+{% endblock %}
+</body>
+</html>
