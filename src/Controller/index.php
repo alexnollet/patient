@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\AddPatient;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Chambre;
 use App\Entity\Services;
 use App\Entity\Lit;
@@ -13,7 +15,7 @@ use App\Entity\Sejour;
 
 class index extends AbstractController
 {
-    public function main(): Response
+    public function new(Request $request)
     {
         $services = $this->getDoctrine()
             ->getRepository(Services::class)
@@ -111,6 +113,36 @@ class index extends AbstractController
             }
         }
 
+        $form = $this->createForm(AddPatient::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $task = $form->getData();
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $patient = new Patient();
+            $patient->setNom($task["nom"]);
+            $patient->setPrenom($task["prenom"]);
+            $patient->setTelpatient($task["num"]);
+            $patient->setAdressepatient($task["adresse"]);
+
+            $entityManager->persist($patient);
+
+            $entityManager->flush();
+
+            $newsejour = new Sejour();
+            $newsejour->setIdpatient($patient->getId());
+            $newsejour->setDebutsejour(new \DateTime('now'));
+
+            $entityManager->persist($newsejour);
+
+            $entityManager->flush();
+
+            return $this->redirect($request->getUri());
+
+        }
 
         return $this->render('index.html.twig', [
             'nomservice' => $nomservice,
@@ -122,6 +154,7 @@ class index extends AbstractController
             'adressepatient' => $adressepatient,
             'servicepatient' => $servicepatient,
             'sejourpatient' => $sejourpatient,
+            'form' => $form->createView(),
         ]);
 
     }

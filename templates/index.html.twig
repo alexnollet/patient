@@ -19,11 +19,9 @@
         {% endfor %}
     </div>
 
-    <br>
-
     <div>
         {% for nom in nompatient %}
-            <br>
+            <br><br>
             {{ nom }}
             {{ prenompatient[loop.index0] }}
             {{ telpatient[loop.index0] }}
@@ -32,6 +30,8 @@
             {{ sejourpatient[loop.index0] }}
         {% endfor %}
     </div>
+    <br>
+    {{ form(form) }}
 
 {% endblock %}
 </body>
