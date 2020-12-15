@@ -7,16 +7,31 @@
 </head>
 <body>
 {% block body %}
+    <div>
+        {% for nom in nomservice %}
+            <br>
+            nom du service : {{ nom }}
+            <br>
+            nombre de lit max : {{ nbchambre[loop.index0] }}
+            <br>
+            nombre de place dispo : {{ nblitdispo[loop.index0] }}
+            <br>
+        {% endfor %}
+    </div>
 
-    {% for nom in nomservice %}
-        <br>
-        nom du service : {{ nom }}
-        <br>
-        nombre de lit max : {{ nbchambre[loop.index0] }}
-        <br>
-        nombre de place dispo : {{ nblitdispo[loop.index0] }}
-        <br>
-    {% endfor %}
+    <br>
+
+    <div>
+        {% for nom in nompatient %}
+            <br>
+            {{ nom }}
+            {{ prenompatient[loop.index0] }}
+            {{ telpatient[loop.index0] }}
+            {{ adressepatient[loop.index0] }}
+            {{ servicepatient[loop.index0] }}
+            {{ sejourpatient[loop.index0] }}
+        {% endfor %}
+    </div>
 
 {% endblock %}
 </body>

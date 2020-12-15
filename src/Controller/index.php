@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Chambre;
 use App\Entity\Services;
 use App\Entity\Lit;
+use App\Entity\Patient;
+use App\Entity\Sejour;
 
 
 class index extends AbstractController
@@ -51,10 +53,75 @@ class index extends AbstractController
 
         }
 
+        $patients = $this->getDoctrine()
+            ->getRepository(Patient::class)
+            ->findAll();
+
+        $nompatient = array();
+        $prenompatient = array();
+        $telpatient = array();
+        $adressepatient = array();
+        $servicepatient = array();
+        $sejourpatient = array();
+
+        for($i = 0, $size = count($patients); $i < $size; ++$i) {
+            array_push($nompatient, $patients[$i]->getNom());
+            array_push($prenompatient, $patients[$i]->getPrenom());
+            array_push($telpatient, $patients[$i]->getTelpatient());
+            array_push($adressepatient, $patients[$i]->getAdressepatient());
+
+            if ($patients[$i]->getIdlit() != 0){
+                $lit = $this->getDoctrine()
+                    ->getRepository(Lit::class)
+                    ->findBy([
+                        'id' => $patients[$i]->getIdlit(),
+                    ]);
+
+                $chambre = $this->getDoctrine()
+                    ->getRepository(Chambre::class)
+                    ->findBy(
+                        ['id' => $lit[0]->getIdchambre()]
+                    );
+
+                $service = $this->getDoctrine()
+                    ->getRepository(Services::class)
+                    ->findBy(
+                        ['id' => $chambre[0]->getIdservice()]
+                    );
+
+                array_push($servicepatient, $service[0]->getNomservice());
+            }
+            else{
+                array_push($servicepatient, 'pas attribué');
+            }
+
+            $sejour = $this->getDoctrine()
+                ->getRepository(Sejour::class)
+                ->findBy([
+                    'idpatient' => $patients[$i]->getId(),
+                ],
+                    ['id' => 'DESC']
+                );
+
+            if ($sejour[0]->getFinsejour() == null){
+                array_push($sejourpatient, date_format($sejour[0]->getDebutsejour(), 'd/m/Y'));
+            }
+            else{
+                array_push($sejourpatient, 'pas de séjour en cours');
+            }
+        }
+
+
         return $this->render('index.html.twig', [
             'nomservice' => $nomservice,
             'nbchambre' => $nbschambre,
             'nblitdispo' => $nbslitdispo,
+            'nompatient' => $nompatient,
+            'prenompatient' => $prenompatient,
+            'telpatient' => $telpatient,
+            'adressepatient' => $adressepatient,
+            'servicepatient' => $servicepatient,
+            'sejourpatient' => $sejourpatient,
         ]);
 
     }
