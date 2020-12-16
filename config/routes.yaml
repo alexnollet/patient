@@ -1,3 +1,23 @@
 index:
     path: /
     controller: App\Controller\index::new
+
+modifPatient:
+    path: /modification_patient
+    controller: App\Controller\modifPatient::new
+
+changeService:
+    path: /changement_service
+    controller: App\Controller\changeService::new
+
+action_changeservice:
+    path: /action_service
+    controller: App\Controller\action\changeservice::new
+
+action_finSejour:
+    path: /fin_sejour
+    controller: App\Controller\action\finSejour::new
+
+action_newSejour:
+    path: /new_sejour
+    controller: App\Controller\action\newSejour::new

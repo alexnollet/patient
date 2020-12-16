@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <div class="contenu">
+
+            <div class="container_title">
+                <p class="red">Nom</p>
+                <p class="reder">Prénom</p>
+                <p class="red">Telephone</p>
+                <p class="reder">Adresse</p>
+                <p class="red">Service</p>
+            </div>
+
+
+            <div class="container_title" id="divresult">
+                <p class="grey">{{ nompatient }}</p>
+                <p class="greyer">{{ prenompatient }}</p>
+                <p class="grey">{{ telpatient }}</p>
+                <p class="greyer">{{ adressepatient }}</p>
+                <p class="grey">{{ servicepatient }}</p>
+            </div>
+
+        </div>
+
+        <h2>Changer de service</h2>
+
+        <div id="service_list">
+            {% for service in services %}
+                <a href="/action_service?id={{ idpatient }}&idservice={{ idservices[loop.index0] }}">{{ service }}</a>
+            {% endfor %}
+        </div>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

@@ -25,7 +25,7 @@ class index extends AbstractController
         $nbschambre = array();
         $nbslitdispo = array();
 
-        for($i = 0, $size = count($services); $i < $size; ++$i) {
+        for($i = 0; $i < count($services); ++$i) {
             array_push($nomservice, $services[$i]->getNomservice());
 
             $chambres = $this->getDoctrine()
@@ -59,6 +59,7 @@ class index extends AbstractController
             ->getRepository(Patient::class)
             ->findAll();
 
+        $idspatient = array();
         $nompatient = array();
         $prenompatient = array();
         $telpatient = array();
@@ -67,31 +68,38 @@ class index extends AbstractController
         $sejourpatient = array();
 
         for($i = 0, $size = count($patients); $i < $size; ++$i) {
+            array_push($idspatient, $patients[$i]->getId());
             array_push($nompatient, $patients[$i]->getNom());
             array_push($prenompatient, $patients[$i]->getPrenom());
             array_push($telpatient, $patients[$i]->getTelpatient());
             array_push($adressepatient, $patients[$i]->getAdressepatient());
 
-            if ($patients[$i]->getIdlit() != 0){
+            if ($patients[$i]->getIdlit() != null){
                 $lit = $this->getDoctrine()
                     ->getRepository(Lit::class)
                     ->findBy([
                         'id' => $patients[$i]->getIdlit(),
                     ]);
 
-                $chambre = $this->getDoctrine()
-                    ->getRepository(Chambre::class)
-                    ->findBy(
-                        ['id' => $lit[0]->getIdchambre()]
-                    );
+                if ($lit[0]->getIdchambre() != null){
 
-                $service = $this->getDoctrine()
-                    ->getRepository(Services::class)
-                    ->findBy(
-                        ['id' => $chambre[0]->getIdservice()]
-                    );
+                    $chambre = $this->getDoctrine()
+                        ->getRepository(Chambre::class)
+                        ->findBy(
+                            ['id' => $lit[0]->getIdchambre()]
+                        );
 
-                array_push($servicepatient, $service[0]->getNomservice());
+                    $service = $this->getDoctrine()
+                        ->getRepository(Services::class)
+                        ->findBy(
+                            ['id' => $chambre[0]->getIdservice()]
+                        );
+
+                    array_push($servicepatient, $service[0]->getNomservice());
+                }
+                else{
+                    array_push($servicepatient, 'pas attribué');
+                }
             }
             else{
                 array_push($servicepatient, 'pas attribué');
@@ -128,6 +136,15 @@ class index extends AbstractController
             $patient->setTelpatient($task["num"]);
             $patient->setAdressepatient($task["adresse"]);
 
+            $lit = $this->getDoctrine()
+                ->getRepository(Lit::class)
+                ->findOneBy([
+                    'disponibilite' => 1,
+                ]);
+
+            $patient->setIdlit($lit->getId());
+            $lit->setDisponibilite(0);
+
             $entityManager->persist($patient);
 
             $entityManager->flush();
@@ -148,6 +165,7 @@ class index extends AbstractController
             'nomservice' => $nomservice,
             'nbchambre' => $nbschambre,
             'nblitdispo' => $nbslitdispo,
+            'idpatient' => $idspatient,
             'nompatient' => $nompatient,
             'prenompatient' => $prenompatient,
             'telpatient' => $telpatient,

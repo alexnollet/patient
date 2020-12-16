@@ -3,36 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
 </head>
-<body>
-{% block body %}
-    <div>
-        {% for nom in nomservice %}
-            <br>
-            nom du service : {{ nom }}
-            <br>
-            nombre de lit max : {{ nbchambre[loop.index0] }}
-            <br>
-            nombre de place dispo : {{ nblitdispo[loop.index0] }}
-            <br>
-        {% endfor %}
-    </div>
 
-    <div>
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <div class="englobe">
+            {% for nom in nomservice %}
+                <div class="container_info">
+                    <p class="titrebloc">{{ nom }}</p>
+                    <p>nombre de lit max : {{ nbchambre[loop.index0] }}</p>
+                    <p>nombre de place dispo : {{ nblitdispo[loop.index0] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    <div class="contenu">
+
+        <div class="container_title">
+            <p class="red">Nom</p>
+            <p class="reder">Prénom</p>
+            <p class="red">Telephone</p>
+            <p class="reder">Adresse</p>
+            <p class="red">Service</p>
+            <p class="reder">Date entrée</p>
+            <p class="red">Action</p>
+        </div>
+
         {% for nom in nompatient %}
-            <br><br>
-            {{ nom }}
-            {{ prenompatient[loop.index0] }}
-            {{ telpatient[loop.index0] }}
-            {{ adressepatient[loop.index0] }}
-            {{ servicepatient[loop.index0] }}
-            {{ sejourpatient[loop.index0] }}
+            <div class="container_title" id="divresult">
+                <p class="grey">{{ nom }}</p>
+                <p class="greyer">{{ prenompatient[loop.index0] }}</p>
+                <p class="grey">{{ telpatient[loop.index0] }}</p>
+                <p class="greyer">{{ adressepatient[loop.index0] }}</p>
+                <p class="grey">{{ servicepatient[loop.index0] }}</p>
+                <p class="greyer">{{ sejourpatient[loop.index0] }}</p>
+                <p class="grey">
+                    <a href="/modification_patient?id={{ idpatient[loop.index0] }}">modifier</a>
+                    {% if sejourpatient[loop.index0] != 'pas de séjour en cours' %}
+                        / <a href="/changement_service?id={{ idpatient[loop.index0] }}">service</a>
+                    {% endif %}
+                    {% if sejourpatient[loop.index0] != 'pas de séjour en cours' %}
+                        / <a href="/fin_sejour?id={{ idpatient[loop.index0] }}">fin de séjour</a>
+                    {% endif %}
+                    {% if sejourpatient[loop.index0] == 'pas de séjour en cours' %}
+                        / <a href="/new_sejour?id={{ idpatient[loop.index0] }}">nouveau séjour</a>
+                    {% endif %}
+                </p>
+            </div>
         {% endfor %}
-    </div>
-    <br>
-    {{ form(form) }}
 
-{% endblock %}
-</body>
+    </div>
+
+        <h2>Ajouter un patient</h2>
+
+        {{ form(form) }}
+
+    {% endblock %}
+    </body>
+{% endapply %}
 </html>
