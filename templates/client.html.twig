@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <h2>que voulez vous faire ?</h2>
+
+        <div id="service_list">
+            <a href="/doc">demande de rdv</a>
+            <a href="/rdv">consultation des rdv</a>
+        </div>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

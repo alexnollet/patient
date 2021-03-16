@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <div class="contenu">
+
+            <div class="container_title">
+                <p class="red">Nom</p>
+                <p class="reder">Jour</p>
+                <p class="red">Status</p>
+                <p class="reder">Action</p>
+            </div>
+
+            {% for nom_doc in nom_docteur %}
+                <div class="container_title" id="divresult">
+                    <p class="grey">{{ nom_doc }}</p>
+                    <p class="greyer">{{ jour[loop.index0] }}</p>
+                    <p class="grey">{{ status[loop.index0] }}</p>
+                    <p class="grey">
+                        {% if status[loop.index0] != 'Réalisé' and status[loop.index0] != 'Annulé' and status[loop.index0] != 'Refusé' %}
+                            <a href="/action_deleterdv?id={{ id[loop.index0] }}&action=Annulé">Annuler le rdv</a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

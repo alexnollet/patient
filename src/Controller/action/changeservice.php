@@ -71,7 +71,7 @@ class changeservice extends AbstractController
 
         }
 
-        return $this->redirect("/");
+        return $this->redirect("/home");
 
     }
 

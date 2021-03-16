@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <div class="contenu">
+
+            <div class="container_title">
+                <p class="red">Nom</p>
+                <p class="reder">Docteur</p>
+                <p class="red">Jour</p>
+                <p class="reder">Status</p>
+                <p class="red">Action</p>
+            </div>
+
+            {% for nom_doc in nom_docteur %}
+                <div class="container_title" id="divresult">
+                    <p class="grey">{{ nom[loop.index0] }}</p>
+                    <p class="greyer">{{ nom_doc }}</p>
+                    <p class="grey">{{ jour[loop.index0] }}</p>
+                    <p class="greyer">{{ status[loop.index0] }}</p>
+                    <p class="grey">
+                        {% if status[loop.index0] != 'Annulé' and status[loop.index0] != 'Refusé' and status[loop.index0] != 'Confirmé' and status[loop.index0] != 'Réalisé'%}
+                            <a href="/action_deleterdv?id={{ id[loop.index0] }}&action=Refusé">Refuser</a>
+                            <a href="/action_deleterdv?id={{ id[loop.index0] }}&action=Confirmé">Confirmer</a>
+                        {% endif %}
+                        {% if status[loop.index0] == 'Confirmé' %}
+                            <a href="/action_deleterdv?id={{ id[loop.index0] }}&action=Réalisé">Réaliser</a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <div class="contenu">
+
+            <div class="container_title">
+                <p class="red">Nom</p>
+                <p class="reder">Disponibilité</p>
+            </div>
+
+            {% for nom_doc in nom %}
+                <div class="container_title" id="divresult">
+                    <p class="grey">{{ nom_doc }}</p>
+                    <p class="greyer">
+                        {% if lundi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Lundi">Lundi</a>
+                        {% endif %}
+                        {% if mardi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Mardi">Mardi</a>
+                        {% endif %}
+                        {% if mercredi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Mercredi">Mercredi</a>
+                        {% endif %}
+                        {% if jeudi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Jeudi">Jeudi</a>
+                        {% endif %}
+                        {% if vendredi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Vendredi">Vendredi</a>
+                        {% endif %}
+                        {% if samedi[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Samedi">Samedi</a>
+                        {% endif %}
+                        {% if dimanche[loop.index0] == 1 %}
+                            <a href="/action_newrdv?id={{ id[loop.index0] }}&jour=Dimanche">Dimanche</a>
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

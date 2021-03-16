@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+</head>
+
+{% apply inline_css(source("index.css")) %}
+    <body>
+    {% block body %}
+
+        <h2>Se connecter</h2>
+
+        {{ form(form) }}
+
+        <p id="fail">{{ fail }}</p>
+
+    {% endblock %}
+    </body>
+{% endapply %}
+</html>

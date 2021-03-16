@@ -49,7 +49,7 @@ class finSejour extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirect("/");
+        return $this->redirect("/home");
 
     }
 

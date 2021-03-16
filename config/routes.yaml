@@ -2,6 +2,18 @@ index:
     path: /
     controller: App\Controller\index::new
 
+home:
+    path: /home
+    controller: App\Controller\home::new
+
+doc:
+    path: /doc
+    controller: App\Controller\voirdoc::new
+
+rdv:
+    path: /rdv
+    controller: App\Controller\voirRdv::new
+
 modifPatient:
     path: /modification_patient
     controller: App\Controller\modifPatient::new
@@ -9,6 +21,14 @@ modifPatient:
 changeService:
     path: /changement_service
     controller: App\Controller\changeService::new
+
+action_newRdv:
+    path: /action_newrdv
+    controller: App\Controller\action\newrdv::new
+
+action_deleteRdv:
+    path: /action_deleterdv
+    controller: App\Controller\action\deleteRdv::new
 
 action_changeservice:
     path: /action_service
